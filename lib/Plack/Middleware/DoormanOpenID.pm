@@ -1,8 +1,11 @@
-package Doorman::PlackMiddleware;
+package Plack::Middleware::DoormanOpenID;
+
 use strict;
+use parent qw(Plack::Middleware);
+
 use 5.010;
 use feature qw(say switch);
-use parent qw(Plack::Middleware);
+
 use Plack::Request;
 use Plack::Util::Accessor qw(root_url);
 
@@ -19,7 +22,7 @@ sub session_url  {
 
 sub csr {
     my ($self, $request) = @_;
-    $self->{csr} ||= Net::OpenID::Consumer->new(
+    return Net::OpenID::Consumer->new(
         ua => LWP::UserAgent->new,
         args => sub { $request->param($_[0]) },
         consumer_secret => "lipsum",
@@ -29,8 +32,6 @@ sub csr {
 
 sub call {
     my ($self, $env) = @_;
-
-    $env->{'doorman.is_here'} = 1;
 
     my $request = Plack::Request->new($env);
 
@@ -53,13 +54,10 @@ sub call {
         }
 
         when(['GET', session_path]) {
-            $env->{'doorman.is_here_2'} = 1;
-
             my $csr = $self->csr($request);
             $csr->handle_server_response(
                 verified => sub {
-                    my $vident = shift;
-                    $env->{'doorman.openid.verified_identity'} = $vident;
+                    $env->{'doorman.openid.verified_identity'} = shift;
                     $env->{'doorman.openid.status'} = 'verified';
                 },
                 setup_required => sub {
