@@ -10,9 +10,7 @@ use Plack::Request;
 use Plack::Util::Accessor qw(root_url scope);
 
 use Net::OpenID::Consumer;
-use LWP::UserAgent;
-use Data::Dumper qw(Dumper);
-use Data::Thunk qw(lazy);
+use LWPx::ParanoidAgent;
 use URI;
 use Scalar::Util qw(weaken);
 
@@ -66,7 +64,7 @@ sub is_sign_in {
 sub csr {
     my ($self, $request) = @_;
     return Net::OpenID::Consumer->new(
-        ua => LWP::UserAgent->new,
+        ua => LWPx::ParanoidAgent->new,
         args => sub { $request->param($_[0]) },
         consumer_secret => "lipsum",
         required_root   => $self->root_url
