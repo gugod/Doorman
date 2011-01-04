@@ -49,16 +49,26 @@ sub openid_verified_path {
     return URI->new($self->openid_verified_uri)->path;
 }
 
-sub verified_identity {
+sub verified_identity_url {
     my ($self) = @_;
     my $env = $self->{env};
     my $scope = $self->scope;
-    return $env->{"doorman.${scope}.openid.verified_identity"};
+    my $session = $env->{'psgix.session'};
+
+    if ($session && $session->{"doorman.${scope}.openid.verified_identity_url"}) {
+        return $session->{"doorman.${scope}.openid.verified_identity_url"};
+    }
+
+    if ($env->{"doorman.${scope}.openid.verified_identity"}) {
+        return $env->{"doorman.${scope}.openid.verified_identity"}->url;
+    }
+
+    return;
 }
 
 sub is_sign_in {
     my ($self) = @_;
-    return defined $self->verified_identity;
+    return defined $self->verified_identity_url;
 }
 
 sub csr {

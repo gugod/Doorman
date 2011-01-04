@@ -11,12 +11,14 @@ my $app = sub {
     my $env = shift;
     my $doorman = $env->{'doorman.openid'};
 
-    my $status = $doorman->is_sign_in ? "Logged In As @{[ $doorman->verified_identity->display ]}" : "Not Logged In";
-
+    my $status = $doorman->is_sign_in ? "Logged In As @{[ $doorman->verified_identity_url ]}" : "Not Logged In";
 
     return [200, ['Content-Type' => 'text/html'], [
         qq{<html><body><nav>},
         qq{<a href="/">Home</a> },
+        qq{<a href="/page1">Page 1</a> },
+        qq{<a href="/page2">Page 2</a> },
+        qq{<a href="/page3">Page 3</a> },
         $doorman->is_sign_in ? qq{ <a href="@{[ $doorman->sign_out_path ]}">Logout</a>} : qq{},
         qq{</nav>},
         qq{<p>$status</p>},
