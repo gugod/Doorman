@@ -3,11 +3,7 @@
 # plackup openid-auth.pl &; open http://localhost:5000
 
 use strict;
-use feature qw(switch say);
-
 use lib qw(lib ../lib);
-
-use Plack;
 
 use Data::Dumper;
 
