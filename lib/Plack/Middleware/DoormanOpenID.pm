@@ -31,11 +31,6 @@ sub verified_identity_url {
     if ($session && $session->{"doorman.${scope}.openid.verified_identity_url"}) {
         return $session->{"doorman.${scope}.openid.verified_identity_url"};
     }
-
-    if ($env->{"doorman.${scope}.openid.verified_identity"}) {
-        return $env->{"doorman.${scope}.openid.verified_identity"}->url;
-    }
-
     return;
 }
 
@@ -56,6 +51,8 @@ sub csr {
 
 sub call {
     my ($self, $env) = @_;
+    my $session = $env->{'psgix.session'};
+    die "Session is required for Doorman.\n" unless $session;
 
     $env->{"doorman.@{[ $self->scope ]}.openid"} = $self;
 
@@ -63,7 +60,6 @@ sub call {
     weaken($self->{env});
 
     my $request = Plack::Request->new($env);
-    my $session = $env->{'psgix.session'};
 
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {
@@ -92,9 +88,7 @@ sub call {
                     $env->{'doorman.'. $self->scope .'.openid.verified_identity'} = $id;
                     $env->{'doorman.'. $self->scope .'.openid.status'} = 'verified';
 
-                    if ($session) {
-                        $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'} = $id->url;
-                    }
+                    $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'} = $id->url;
                 },
                 setup_required => sub {
                     $env->{'doorman.'. $self->scope .'.openid.status'} = 'setup_required';
@@ -114,9 +108,7 @@ sub call {
         }
 
         when(['GET', $self->sign_out_path]) {
-            if ($session) {
-                delete $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'};
-            }
+            delete $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'};
         }
     }
 
