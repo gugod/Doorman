@@ -3,13 +3,19 @@
 # plackup openid-auth.pl &; open http://localhost:5000
 
 use strict;
-use lib qw(lib ../lib);
+use File::Spec;
+my $DIR;
+
+BEGIN {
+    (undef, $DIR, undef) = File::Spec->splitpath( File::Spec->rel2abs(__FILE__) );
+    unshift @INC, "$DIR/../lib";
+}
 
 use Data::Dumper;
 
 my $app = sub {
     my $env = shift;
-    my $doorman = $env->{'doorman.openid'};
+    my $doorman = $env->{'doorman.users.openid'};
 
     my $status = $doorman->is_sign_in ? "Logged In As @{[ $doorman->verified_identity_url ]}" : "Not Logged In";
 

@@ -1,10 +1,8 @@
 package Plack::Middleware::DoormanOpenID;
-
-use strict;
-use parent qw(Plack::Middleware);
-
 use 5.010;
-use feature qw(say switch);
+use strict;
+use feature qw(switch);
+use parent 'Doorman::PlackMiddleware';
 
 use Plack::Request;
 use Plack::Util::Accessor qw(root_url scope);
@@ -14,34 +12,9 @@ use LWPx::ParanoidAgent;
 use URI;
 use Scalar::Util qw(weaken);
 
-sub scope_uri  {
-    my ($self) = @_;
-    $self->root_url . '/' . $self->scope()
-}
-
-sub sign_in_uri {
-    my ($self) = @_;
-    return $self->scope_uri . "/sign_in";
-}
-
-sub sign_out_uri {
-    my ($self) = @_;
-    return $self->scope_uri . "/sign_out";
-}
-
 sub openid_verified_uri {
     my ($self) = @_;
     return $self->scope_uri . "/openid_verified";
-}
-
-sub sign_in_path {
-    my ($self) = @_;
-    return URI->new($self->sign_in_uri)->path;
-}
-
-sub sign_out_path {
-    my ($self) = @_;
-    return URI->new($self->sign_out_uri)->path;
 }
 
 sub openid_verified_path {
@@ -84,7 +57,7 @@ sub csr {
 sub call {
     my ($self, $env) = @_;
 
-    $env->{'doorman.openid'} = $self;
+    $env->{"doorman.@{[ $self->scope ]}.openid"} = $self;
 
     $self->{env} = $env;
     weaken($self->{env});

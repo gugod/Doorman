@@ -2,6 +2,12 @@ package Doorman::PlackMiddleware;
 use 5.010;
 use parent 'Plack::Middleware';
 
+# STUB
+sub is_sign_in {
+    my ($self) = @_;
+    die "Unimplemented: @{[ ref($self )]}->is_sign_in must be implemented.";
+}
+
 sub scope_uri  {
     my ($self) = @_;
     $self->root_url . '/' . $self->scope()
