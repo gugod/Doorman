@@ -1,10 +1,15 @@
 #!/usr/bin/env perl
 
-# plackup openid-auth.pl &; open http://localhost:5000
-
 use strict;
-use lib qw(lib ../lib);
+use File::Spec;
+my $DIR;
 
+BEGIN {
+    (undef, $DIR, undef) = File::Spec->splitpath( File::Spec->rel2abs(__FILE__) );
+    unshift @INC, "$DIR/../lib";
+}
+
+use YAML;
 use Data::Dumper;
 
 my $app = sub {
@@ -36,11 +41,18 @@ my $app = sub {
 # However, The 'callback' value in the app setting can be a random valid URL,
 # the real, useful, proper callback url is given in the middleware.
 
+
+unless (-f "$DIR/twitter.yml") {
+    die "Construct $DIR/twitter.yml first, see $DIR/twitter.yml.example for example.\n";
+}
+
+my $twitter_config = YAML::LoadFile("$DIR/twitter.yml");
+
 use Plack::Builder;
 builder {
     enable "Session::Cookie";
     enable "DoormanTwitter", root_url => 'http://localhost:5000', scope => 'users',
-        consumer_key    => "XXX",
-        consumer_secret => "XXX";
+        consumer_key    => $twitter_config->{consumer_key},
+        consumer_secret => $twitter_config->{consumer_secret};
     $app;
 };
