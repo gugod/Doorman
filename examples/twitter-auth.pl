@@ -30,6 +30,12 @@ my $app = sub {
     ]];
 };
 
+
+# Register your test app at http://twitter.com/oauth_clients
+# Must make it a 'broweser app' with 'callback' value in order to get it working.
+# However, The 'callback' value in the app setting can be a random valid URL,
+# the real, useful, proper callback url is given in the middleware.
+
 use Plack::Builder;
 builder {
     enable "Session::Cookie";
