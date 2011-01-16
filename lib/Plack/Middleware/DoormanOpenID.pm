@@ -116,3 +116,61 @@ sub call {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Plack::Middleware::DoormanOpenID - The OpenID sign-in middleware.
+
+=head1 SYNOPSIS
+
+    use Plack::Builder;
+    builder {
+        enable "Session::Cookie";
+        enable "DoormanOpenID", root_url => 'http://localhost:5000', scope => 'users';
+
+        sub {
+            my $env = shift;
+            my $doorman = $env->{'doorman.users.openid'};
+
+        }
+    };
+
+=head1 DESCRIPTION
+
+=he1d METHODS
+
+=over 4
+
+=item * is_sign_in
+
+Returns true if the current session is considered signed in.
+
+=item * verified_identity_url
+
+Returns the verified OpenID URL if current session is sign in. Returns undef otherwise.
+
+=item * sign_in_path, sign_in_url
+
+Returns a path, or full url, that is used to let user POST an openid
+url to sign in. It should be used as the value of "action" attribute
+of a form. For example:
+
+    my $doorman = $env->{'doorman.users.openid'};
+
+    my $sign_in_form = <<HTML;
+    <form method="POST" action="@{[ $doorman->sign_in_path ]}">
+        <label for="openid">OpenID</label>
+        <input type="text" id="openid" name="openid" autofocus>
+        <input type="submit" value="Sign In">
+    </form>
+    HTML
+
+At this point you need to name the parameter C<openid>.
+
+=item * sign_out_path, sign_out_url
+
+Returns a path that, when visited, wipes out the signed in information in the session.
+
+=back
