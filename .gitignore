@@ -1,3 +1,11 @@
+Makefile
+MANIFEST
+MANIFEST.bak
+META.yml
+Makefile
+Makefile.old
+inc/
+*~
 examples/twitter.yml
 
 .DS_Store

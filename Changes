@@ -1,0 +1,3 @@
+0.01: First Release.
+- Contains basic OpenID and Twitter auth middleware.
+
