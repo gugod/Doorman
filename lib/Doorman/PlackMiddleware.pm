@@ -2,6 +2,10 @@ package Doorman::PlackMiddleware;
 use 5.010;
 use parent 'Plack::Middleware';
 
+use Doorman;
+our $VERSION   = $Doorman::VERSION;
+our $AUTHORITY = $Doorman::AUTHORITY;
+
 # STUB
 sub is_sign_in {
     my ($self) = @_;

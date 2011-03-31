@@ -2,6 +2,11 @@ package Plack::Middleware::DoormanTwitter;
 use 5.010;
 use parent 'Doorman::PlackMiddleware';
 use strict;
+use Doorman;
+
+our $VERSION   = $Doorman::VERSION;
+our $AUTHORITY = $Doorman::AUTHORITY;
+
 use feature qw(say switch);
 use Plack::Request;
 use Plack::Util::Accessor qw(root_url scope consumer_key consumer_secret);

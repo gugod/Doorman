@@ -1,9 +1,10 @@
 package Plack::Middleware::DoormanOpenID;
 use 5.010;
 use strict;
+use Doorman;
 
-our $VERSION   = '0.02';
-our $AUTHORITY = 'http://gugod.org';
+our $VERSION   = $Doorman::VERSION;
+our $AUTHORITY = $Doorman::AUTHORITY;
 
 use feature qw(switch);
 use parent 'Doorman::PlackMiddleware';
