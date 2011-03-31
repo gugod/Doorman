@@ -1,3 +1,8 @@
+0.02:
+- ua and consumer_secret are now configurable
+- root_url is now optional -- a default one would be your app host without path (something looks like http://foo.com or http://bar.com:8080)
+- scope is now default to 'users', and optional.
+
 0.01: First Release.
 - Contains basic OpenID and Twitter auth middleware.
 

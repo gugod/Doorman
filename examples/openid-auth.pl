@@ -37,6 +37,6 @@ my $app = sub {
 use Plack::Builder;
 builder {
     enable "Session::Cookie";
-    enable "DoormanOpenID", root_url => 'http://localhost:5000', scope => 'users';
+    enable "DoormanOpenID", scope => 'users';
     $app;
 };
