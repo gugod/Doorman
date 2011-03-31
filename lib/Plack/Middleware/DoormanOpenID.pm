@@ -5,13 +5,22 @@ use feature qw(switch);
 use parent 'Doorman::PlackMiddleware';
 
 use Plack::Request;
-use Plack::Util::Accessor qw(root_url scope);
+use Plack::Util::Accessor qw(root_url scope secret ua);
 
 use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
 use URI;
 use Scalar::Util qw(weaken);
 use Plack::Session;
+
+sub prepare_app {
+    my $self = shift;
+    $self->secret(
+        'This is the default consumer_secret value for Net::OpenID::Consumer
+         that you should provide for your own app.'
+    ) unless $self->secret;
+    $self->ua('LWPx::ParanoidAgent') unless $self->ua;
+}
 
 sub openid_verified_uri {
     my ($self) = @_;
@@ -40,9 +49,9 @@ sub is_sign_in {
 sub csr {
     my ($self, $request) = @_;
     return Net::OpenID::Consumer->new(
-        ua => LWPx::ParanoidAgent->new,
+        ua => ref($self->ua) ? $self->ua : $self->ua->new,
         args => sub { $request->param($_[0]) },
-        consumer_secret => "lipsum",
+        consumer_secret => $self->secret,
         required_root   => $self->root_url
     );
 }
