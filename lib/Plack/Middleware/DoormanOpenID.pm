@@ -11,6 +11,7 @@ use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
 use URI;
 use Scalar::Util qw(weaken);
+use Plack::Session;
 
 sub openid_verified_uri {
     my ($self) = @_;
@@ -26,12 +27,9 @@ sub verified_identity_url {
     my ($self) = @_;
     my $env = $self->{env};
     my $scope = $self->scope;
-    my $session = $env->{'psgix.session'};
+    my $session = Plack::Session->new($env);
 
-    if ($session && $session->{"doorman.${scope}.openid.verified_identity_url"}) {
-        return $session->{"doorman.${scope}.openid.verified_identity_url"};
-    }
-    return;
+    return $session->get("doorman.${scope}.openid.verified_identity_url");
 }
 
 sub is_sign_in {
@@ -51,7 +49,7 @@ sub csr {
 
 sub call {
     my ($self, $env) = @_;
-    my $session = $env->{'psgix.session'};
+    my $session = Plack::Session->new($env);
     die "Session is required for Doorman.\n" unless $session;
 
     $env->{"doorman.@{[ $self->scope ]}.openid"} = $self;
@@ -81,6 +79,7 @@ sub call {
 
         when(['GET', $self->openid_verified_path]) {
             my $csr = $self->csr($request);
+
             $csr->handle_server_response(
                 verified => sub {
                     my $id = shift;
@@ -88,7 +87,7 @@ sub call {
                     $env->{'doorman.'. $self->scope .'.openid.verified_identity'} = $id;
                     $env->{'doorman.'. $self->scope .'.openid.status'} = 'verified';
 
-                    $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'} = $id->url;
+                    $session->set('doorman.'. $self->scope .'.openid.verified_identity_url', $id->url);
                 },
                 setup_required => sub {
                     $env->{'doorman.'. $self->scope .'.openid.status'} = 'setup_required';
@@ -108,7 +107,7 @@ sub call {
         }
 
         when(['GET', $self->sign_out_path]) {
-            delete $session->{'doorman.'. $self->scope .'.openid.verified_identity_url'};
+            $session->remove('doorman.'. $self->scope .'.openid.verified_identity_url');
         }
     }
 
