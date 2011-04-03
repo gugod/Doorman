@@ -44,7 +44,6 @@ sub verified_identity_url {
     my $env = $self->{env};
     my $scope = $self->scope;
     my $session = Plack::Session->new($env);
-
     return $session->get("doorman.${scope}.openid.verified_identity_url");
 }
 
@@ -58,7 +57,7 @@ sub csr {
 
     if (!$self->root_url) {
         my $root_uri = $request->uri;
-        $root_uri->path("/");
+        $root_uri->path("");
         $self->root_url($root_uri->as_string);
     }
 
