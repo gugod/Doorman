@@ -1,3 +1,6 @@
+0.04:
+- Add a base authentication middleware DoormanAuthentication for doing local auth in the app.
+
 0.03:
 - Minor fix on too many "/"s in URI path
 

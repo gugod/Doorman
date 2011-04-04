@@ -1,6 +1,6 @@
 package Doorman;
 use 5.010;
-our $VERSION = "0.03";
+our $VERSION = "0.04";
 our $AUTHORITY = 'http://gugod.org';
 
 1;
@@ -19,6 +19,10 @@ The following middlewares are provided. Please consult their documentation
 for further information.
 
 =over 4
+
+=item *
+
+L<Plack::Middleware::DoormanAuthentication>
 
 =item *
 
