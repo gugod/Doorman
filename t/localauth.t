@@ -6,20 +6,20 @@ use Test::More;
 
 use Plack::Builder;
 use Plack::Test;
+use HTTP::Request::Common;
 
 test_psgi
     app => builder {
         enable "Session";
         enable "DoormanAuthentication", authenticator => sub {
-            my ($login, $password) = @_;
-            return $login;
+            my ($self, $env) = @_;
+            my $request = Plack::Request->new($env);
+            return $request->param("username") eq "ohai" && $request->param("password") eq "correct";
         };
 
         sub {
             my ($env) = @_;
             my $body = "NOT SIGN IN";
-            # require YAML;
-            # print YAML::Dump($env);
             my $doorman = $env->{"doorman.users.authentication"};
             if ($doorman && $doorman->is_sign_in) {
                 $body = "SIGN IN";
@@ -28,31 +28,26 @@ test_psgi
             return [200, ["Content-Type" => "text/plain"],  [$body]];
         };
     },
+
     client => sub {
         my ($cb) = @_;
 
-        {
-            my $res = $cb->(HTTP::Request->new(GET => "http://localhost/xd"));
-            is $res->content, 'NOT SIGN IN';
-        }
+        my @steps = (
+            [GET("/xd"), "NOT SIGN IN", "Guest visits, not sign in"],
+            [POST("/users/sign_in", [ username => "ohai", password => "wrong" ]), "NOT SIGN IN", "Sign attempts with wrong password. not sign in"],
+            [POST("/users/sign_in", [ username => "ohai", password => "correct" ]), "SIGN IN", "Sign attempts with correct password. sign in"],
+            [GET("/xd"), "SIGN IN", "Remain sign in"],
+            [GET("/users/sign_out"), "NOT SIGN IN", "Sign out attempt."],
+            [GET("/xd"), "NOT SIGN IN", "Remain sign out"]
+        );
 
-        {
-            my $res = $cb->(HTTP::Request->new(
-                POST => "http://localhost/users/sign_in",
-                undef,
-                "username=ohai&password=some"
-            ));
-
-            ok $res->is_success;
-            is $res->content, 'SIGN IN';
-        }
-
-        {
-            $cb->(HTTP::Request->new(GET => "http://localhost/users/sign_out"));
-            my $res = $cb->(HTTP::Request->new(GET => "http://localhost/foo"));
-
-            ok $res->is_success;
-            is $res->content, 'NOT SIGN IN';
+        my $cookie;
+        for my $step (@steps) {
+            my $req = $step->[0];
+            $req->header("Cookie", $cookie) if ($cookie);
+            my $res = $cb->($req);
+            $cookie = $res->header("Set-Cookie");
+            is $res->content, $step->[1], $step->[2];
         }
     };
 
