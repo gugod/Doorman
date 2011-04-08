@@ -1,3 +1,6 @@
+0.05:
+- Make middlewares chainable
+
 0.04:
 - Add a base authentication middleware DoormanAuthentication for doing local auth in the app.
 
