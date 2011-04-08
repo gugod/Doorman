@@ -51,9 +51,12 @@ sub call {
 
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {
-            my $success = $self->authenticator->($self, $self->{env});
+            my ($success, $error_message) = $self->authenticator->($self, $self->{env});
             if ($success) {
                 $session->set($self->_session_key("authenticated"), $success);
+            }
+            else {
+                $env->{ $self->_session_key("error") } = $error_message;
             }
         }
 

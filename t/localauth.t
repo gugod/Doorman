@@ -14,7 +14,9 @@ test_psgi
         enable "DoormanAuthentication", authenticator => sub {
             my ($self, $env) = @_;
             my $request = Plack::Request->new($env);
-            return $request->param("username") eq "ohai" && $request->param("password") eq "correct";
+            my $success = $request->param("username") eq "ohai" && $request->param("password") eq "correct";
+            my $error = $success ? undef : "Wrong username or password";
+            return ($success, $error);
         };
 
         sub {
@@ -23,6 +25,9 @@ test_psgi
             my $doorman = $env->{"doorman.users.authentication"};
             if ($doorman && $doorman->is_sign_in) {
                 $body = "SIGN IN";
+            }
+            if ($env->{"doorman.users.authentication.error"}) {
+                $body .= ".\n" . $env->{"doorman.users.authentication.error"};
             }
 
             return [200, ["Content-Type" => "text/plain"],  [$body]];
@@ -34,7 +39,7 @@ test_psgi
 
         my @steps = (
             [GET("/xd"), "NOT SIGN IN", "Guest visits, not sign in"],
-            [POST("/users/sign_in", [ username => "ohai", password => "wrong" ]), "NOT SIGN IN", "Sign attempts with wrong password. not sign in"],
+            [POST("/users/sign_in", [ username => "ohai", password => "wrong" ]), "NOT SIGN IN.\nWrong username or password", "Sign attempts with wrong password. not sign in"],
             [POST("/users/sign_in", [ username => "ohai", password => "correct" ]), "SIGN IN", "Sign attempts with correct password. sign in"],
             [GET("/xd"), "SIGN IN", "Remain sign in"],
             [GET("/users/sign_out"), "NOT SIGN IN", "Sign out attempt."],

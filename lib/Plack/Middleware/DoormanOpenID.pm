@@ -84,19 +84,21 @@ sub call {
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {
             my $csr = $self->csr($request);
-            my $claimed_identity = $csr->claimed_identity( $request->param("openid") );
+            if ($request->param("openid")) {
+                if (my $claimed_identity = $csr->claimed_identity( $request->param("openid") )) {
+                    my $check_url = $claimed_identity->check_url(
+                        delayed_return => 1,
+                        return_to      => $self->openid_verified_uri,
+                        trust_root     => $self->root_url
+                    );
 
-            unless ($claimed_identity) {
-                return [200, ["Content-Type" => 'text/html'], ["Error: " . $csr->errcode]];
+                    return [302, ["Location" => $check_url], [""]];
+                }
+                else {
+                    $env->{'doorman.'. $self->scope .'.openid.status'} = 'error';
+                    $env->{'doorman.'. $self->scope .'.openid.error'} = $csr->errcode;
+                }
             }
-
-            my $check_url = $claimed_identity->check_url(
-                delayed_return => 1,
-                return_to      => $self->openid_verified_uri,
-                trust_root     => $self->root_url
-            );
-
-            return [302, ["Location" => $check_url], [""]];
         }
 
         when(['GET', $self->openid_verified_path]) {
