@@ -30,14 +30,14 @@ sub prepare_app {
     $self->ua('LWPx::ParanoidAgent') unless $self->ua;
 }
 
-sub openid_verified_uri {
+sub openid_verified_url {
     my ($self) = @_;
     return $self->scope_url . "/openid_verified";
 }
 
 sub openid_verified_path {
     my ($self) = @_;
-    return URI->new($self->openid_verified_uri)->path;
+    return URI->new($self->openid_verified_url)->path;
 }
 
 sub verified_identity_url {
@@ -89,7 +89,7 @@ sub call {
                 if (my $claimed_identity = $csr->claimed_identity( $request->param("openid") )) {
                     my $check_url = $claimed_identity->check_url(
                         delayed_return => 1,
-                        return_to      => $self->openid_verified_uri,
+                        return_to      => $self->openid_verified_url,
                         trust_root     => $self->root_url
                     );
 

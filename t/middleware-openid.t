@@ -24,6 +24,8 @@ use Plack::Middleware::DoormanOpenID;
     is $mw->scope_url,    "http://example.com/app/users";
     is $mw->sign_in_url,  "http://example.com/app/users/sign_in";
     is $mw->sign_out_url, "http://example.com/app/users/sign_out";
+
+    is $mw->openid_verified_url, "http://example.com/app/users/openid_verified";
 }
 
 done_testing;
