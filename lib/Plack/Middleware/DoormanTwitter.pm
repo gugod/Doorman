@@ -2,10 +2,9 @@ package Plack::Middleware::DoormanTwitter;
 use 5.010;
 use parent 'Doorman::PlackMiddleware';
 use strict;
-use Doorman;
 
-our $VERSION   = $Doorman::VERSION;
-our $AUTHORITY = $Doorman::AUTHORITY;
+our $VERSION   = "0.06";
+our $AUTHORITY = "http://gugod.org";
 
 use feature qw(say switch);
 use Plack::Request;
