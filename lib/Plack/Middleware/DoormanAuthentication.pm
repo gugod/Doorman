@@ -12,18 +12,8 @@ use parent 'Doorman::PlackMiddleware';
 use Plack::Util::Accessor qw(authenticator);
 use Plack::Session;
 
-use Scalar::Util qw(weaken);
-
-sub _session_key {
-    my ($self, $key) = @_;
-    return "doorman." . $self->scope . ".authentication" . ( $key ? ".$key" : "");
-}
-
 sub is_sign_in {
-    my ($self) = @_;
-    my $env = $self->{env};
-    my $session = Plack::Session->new($env);
-    return $session->get( $self->_session_key("authenticated") );
+    $_[0]->session_get("authenticated");
 }
 
 sub call {
@@ -31,24 +21,23 @@ sub call {
 
     $self->prepare_call($env);
 
-    $env->{ $self->_session_key } = $self;
+    $env->{ $self->fq } = $self;
 
     my $request = Plack::Request->new($env);
-    my $session = Plack::Session->new($env);
 
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {
             my ($success, $error_message) = $self->authenticator->($self, $self->{env});
             if ($success) {
-                $session->set($self->_session_key("authenticated"), $success);
+                $self->session_set("authenticated" => $success);
             }
             else {
-                $env->{ $self->_session_key("error") } = $error_message;
+                $self->env_set("error" => $error_message);
             }
         }
 
         when(['GET', $self->sign_out_path]) {
-            $session->remove( $self->_session_key("authenticated") );
+            $self->session_remove("authenticated");
         }
     }
 

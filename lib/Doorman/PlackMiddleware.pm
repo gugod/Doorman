@@ -62,6 +62,13 @@ sub session_set {
     return $session->set( $self->fq($name), $value );
 }
 
+sub session_remove {
+    my ($self, $name, $value) = @_;
+    my $session = Plack::Session->new($self->{env});
+    $session->remove( $self->fq($name) );
+}
+
+
 # STUB
 sub is_sign_in {
     my ($self) = @_;

@@ -16,7 +16,6 @@ use Net::OpenID::Consumer;
 use LWPx::ParanoidAgent;
 use URI;
 use Scalar::Util qw(weaken);
-use Plack::Session;
 
 sub prepare_app {
     my $self = shift;
@@ -35,19 +34,15 @@ sub openid_verified_url {
 }
 
 sub openid_verified_path {
-    return URI->new($_[0]->openid_verified_url)->path;
+    URI->new($_[0]->openid_verified_url)->path;
 }
 
 sub verified_identity_url {
-    my ($self) = @_;
-    my $env = $self->{env};
-    my $scope = $self->scope;
-    my $session = Plack::Session->new($env);
-    return $session->get("doorman.${scope}.openid.verified_identity_url");
+    $_[0]->session_get("verified_identity_url");
 }
 
 sub is_sign_in {
-    return defined $_[0]->verified_identity_url;
+    defined $_[0]->verified_identity_url;
 }
 
 sub csr {
@@ -63,9 +58,6 @@ sub csr {
 sub call {
     my ($self, $env) = @_;
     $self->prepare_call($env);
-
-    my $session = Plack::Session->new($env);
-    die "Session is required for Doorman.\n" unless $session;
 
     $env->{"doorman.@{[ $self->scope ]}.openid"} = $self;
 
@@ -100,27 +92,27 @@ sub call {
                     $env->{'doorman.'. $self->scope .'.openid.verified_identity'} = $id;
                     $env->{'doorman.'. $self->scope .'.openid.status'} = 'verified';
 
-                    $session->set('doorman.'. $self->scope .'.openid.verified_identity_url', $id->url);
+                    $self->session_set("verified_identity_url", $id->url);
                 },
                 setup_required => sub {
-                    $env->{'doorman.'. $self->scope .'.openid.status'} = 'setup_required';
+                    $self->env_set("status", "setup_required");
                 },
                 cancelled      => sub {
-                    $env->{'doorman.'. $self->scope .'.openid.status'} = 'cancelled';
+                    $self->env_set("status", "cancelled");
                 },
                 not_openid     => sub {
-                    $env->{'doorman.'. $self->scope .'.openid.status'} = 'not_openid';
+                    $self->env_set("status", "not_openid");
                 },
                 error          => sub {
                     my $err = shift;
-                    $env->{'doorman.'. $self->scope .'.openid.status'} = 'error';
-                    $env->{'doorman.'. $self->scope .'.openid.error'} = $err;
+                    $self->env_set("status", "error");
+                    $self->env_set("error",  $err);
                 }
             );
         }
 
         when(['GET', $self->sign_out_path]) {
-            $session->remove('doorman.'. $self->scope .'.openid.verified_identity_url');
+            $self->session_remove("verified_identity_url");
         }
     }
 
