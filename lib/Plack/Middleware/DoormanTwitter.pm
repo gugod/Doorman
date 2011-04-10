@@ -9,7 +9,7 @@ our $AUTHORITY = $Doorman::AUTHORITY;
 
 use feature qw(say switch);
 use Plack::Request;
-use Plack::Util::Accessor qw(root_url scope consumer_key consumer_secret);
+use Plack::Util::Accessor qw(consumer_key consumer_secret);
 use URI;
 use Scalar::Util qw(weaken);
 use Net::Twitter::Lite;
@@ -49,14 +49,14 @@ sub twitter_access {
     return;
 }
 
-sub twitter_verified_uri {
+sub twitter_verified_url {
     my ($self) = @_;
-    return $self->scope_uri . "/twitter_verified";
+    return $self->scope_url . "/twitter_verified";
 }
 
 sub twitter_verified_path {
     my ($self) = @_;
-    return URI->new($self->twitter_verified_uri)->path;
+    return URI->new($self->twitter_verified_url)->path;
 }
 
 sub twitter_screen_name {
@@ -77,8 +77,7 @@ sub is_sign_in {
 sub call {
     my ($self, $env) = @_;
 
-    $self->{env} = $env;
-    weaken($self->{env});
+    $self->prepare_call($env);
 
     $env->{"doorman.@{[ $self->scope ]}.twitter"} = $self;
 
@@ -88,7 +87,7 @@ sub call {
     given([$request->method, $request->path]) {
         when(['GET', $self->sign_in_path]) {
             my $nt = $self->twitter;
-            my $url = $nt->get_authentication_url(callback => $self->twitter_verified_uri);
+            my $url = $nt->get_authentication_url(callback => $self->twitter_verified_url);
 
             $session->{"doorman.@{[ $self->scope ]}.twitter.oauth"} = {
                 token => $nt->request_token,
