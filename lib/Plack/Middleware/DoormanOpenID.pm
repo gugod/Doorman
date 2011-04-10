@@ -55,13 +55,6 @@ sub is_sign_in {
 
 sub csr {
     my ($self, $request) = @_;
-
-    if (!$self->root_url) {
-        my $root_uri = $request->uri;
-        $root_uri->path("");
-        $self->root_url($root_uri->as_string);
-    }
-
     return Net::OpenID::Consumer->new(
         ua => ref($self->ua) ? $self->ua : $self->ua->new,
         args => sub { $request->param($_[0]) },
