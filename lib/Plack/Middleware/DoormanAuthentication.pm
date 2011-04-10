@@ -28,21 +28,13 @@ sub is_sign_in {
 
 sub call {
     my ($self, $env) = @_;
-    my $request = Plack::Request->new($env);
-    my $session = Plack::Session->new($env);
-    die "Session is required for Doorman.\n" unless $session;
 
-    $self->{env} = $env;
-    weaken($self->{env});
-
-
-    if (!$self->root_url) {
-        my $root_uri = $request->uri;
-        $root_uri->path("");
-        $self->root_url($root_uri->as_string);
-    }
+    $self->prepare_call($env);
 
     $env->{ $self->_session_key } = $self;
+
+    my $request = Plack::Request->new($env);
+    my $session = Plack::Session->new($env);
 
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {

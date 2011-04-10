@@ -72,16 +72,14 @@ sub csr {
 
 sub call {
     my ($self, $env) = @_;
+    $self->prepare_call($env);
+
     my $session = Plack::Session->new($env);
     die "Session is required for Doorman.\n" unless $session;
 
     $env->{"doorman.@{[ $self->scope ]}.openid"} = $self;
 
-    $self->{env} = $env;
-    weaken($self->{env});
-
     my $request = Plack::Request->new($env);
-
     given([$request->method, $request->path]) {
         when(['POST', $self->sign_in_path]) {
             my $csr = $self->csr($request);

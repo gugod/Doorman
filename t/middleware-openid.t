@@ -9,6 +9,7 @@ use Plack::Middleware::DoormanOpenID;
 {
     my $mw = Plack::Middleware::DoormanOpenID->new;
     $mw->prepare_app;
+    $mw->scope_object( Doorman::Scope->new );
 
     is $mw->scope_path, "/users";
     is $mw->sign_in_path, "/users/sign_in";
@@ -20,6 +21,7 @@ use Plack::Middleware::DoormanOpenID;
 {
     my $mw = Plack::Middleware::DoormanOpenID->new( root_url => "http://example.com/app");
     $mw->prepare_app;
+    $mw->scope_object( Doorman::Scope->new(root_url => "http://example.com/app") );
 
     is $mw->scope_url,    "http://example.com/app/users";
     is $mw->sign_in_url,  "http://example.com/app/users/sign_in";
