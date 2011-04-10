@@ -32,6 +32,36 @@ sub scope_object {
     return $self->{scope_object};
 }
 
+# Fully Qualified
+sub fq {
+    my ($self, $name) = @_;
+    my $class_name = ref($self);
+    my ($mwname) = lc($class_name) =~ /^Plack::Middleware::Doorman(.+)$/i;
+    return "doorman." . $self->scope . ".${mwname}" . ($name ? ".${name}" : "");
+}
+
+sub env_get {
+    my ($self, $name) = @_;
+    return $self->{env}->{ $self->fq($name) };
+}
+
+sub env_set {
+    my ($self, $name, $value) = @_;
+    $self->{env}->{ $self->fq($name) } = $value;
+}
+
+sub session_get {
+    my ($self, $name) = @_;
+    my $session = Plack::Session->new($self->{env});
+    return $session->get( $self->fq($name) );
+}
+
+sub session_set {
+    my ($self, $name, $value) = @_;
+    my $session = Plack::Session->new($self->{env});
+    return $session->set( $self->fq($name), $value );
+}
+
 # STUB
 sub is_sign_in {
     my ($self) = @_;
