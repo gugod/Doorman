@@ -31,13 +31,11 @@ sub prepare_app {
 }
 
 sub openid_verified_url {
-    my ($self) = @_;
-    return $self->scope_url . "/openid_verified";
+    $_[0]->scope_url . "/openid_verified";
 }
 
 sub openid_verified_path {
-    my ($self) = @_;
-    return URI->new($self->openid_verified_url)->path;
+    return URI->new($_[0]->openid_verified_url)->path;
 }
 
 sub verified_identity_url {
@@ -49,8 +47,7 @@ sub verified_identity_url {
 }
 
 sub is_sign_in {
-    my ($self) = @_;
-    return defined $self->verified_identity_url;
+    return defined $_[0]->verified_identity_url;
 }
 
 sub csr {
