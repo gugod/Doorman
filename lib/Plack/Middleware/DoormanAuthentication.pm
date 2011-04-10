@@ -9,15 +9,10 @@ our $AUTHORITY = $Doorman::AUTHORITY;
 use feature qw(switch);
 use parent 'Doorman::PlackMiddleware';
 
-use Plack::Util::Accessor qw(root_url scope authenticator);
+use Plack::Util::Accessor qw(authenticator);
 use Plack::Session;
 
 use Scalar::Util qw(weaken);
-
-sub prepare_app {
-    my $self = shift;
-    $self->scope('users') unless $self->scope;
-}
 
 sub _session_key {
     my ($self, $key) = @_;
