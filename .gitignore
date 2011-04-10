@@ -32,3 +32,5 @@ examples/twitter.yml
 .sd
 .sass-cache
 .livereload
+
+cover_db
