@@ -13,9 +13,11 @@ sub prepare_app {
     my $self = shift;
     $self->scope('users') unless $self->scope;
 
-    my $scope_object = Doorman::Scope->new(name => $self->scope);
-    $scope_object->root_url($self->root_url) if $self->root_url;
-    $self->scope_object( $scope_object );
+    unless ($self->scope_object) {
+        my $scope_object = Doorman::Scope->new(name => $self->scope);
+        $scope_object->root_url($self->root_url) if $self->root_url;
+        $self->scope_object( $scope_object );
+    }
 
     return $self;
 }
