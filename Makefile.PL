@@ -10,7 +10,7 @@ requires
     'IO::Socket::SSL' => '1.39',
     'Net::OpenID::Consumer' => '1.03',
     'LWPx::ParanoidAgent' => '1.07',
-    'Net::Twitter::Lite' => '1.03';
+    'Net::Twitter::Lite' => '0.10004';
 
 build_requires  'Test::More'        => '0.98';
 
