@@ -5,6 +5,28 @@ package Doorman::Manual;
 Doorman is a collection of PSGI middlewares that are designed to perform authentication jobs.
 It stores authentication info in the session or env, you just configure it properly.
 
+=head2 Quick Start
+
+=head2 Kitchen sink
+
+    builder {
+        enable "DoormanOpenID";
+        enable "DoormanTwitter";
+        enable "DoormanAuthentication", authenticator => \&auth;
+        sub {
+             my $env = shift;
+             my $doorman = Doorman->new($env);
+
+             # "user" and "admin" are scope names
+             # current_<scope> are dynamic methods.
+             # return undef value when the scope is not authenticated.
+             my $user  = $doorman->current_user;
+             my $admin = $doorman->current_admin;
+
+             $doorman->is_user_sign_in;
+        }
+    }
+
 =head2 Stuff in the $env
 
 Doorman put a lot of objects to C<$env> in the request life cycle. They
