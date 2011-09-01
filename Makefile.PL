@@ -18,7 +18,7 @@ feature "Twitter Middleware" =>
     -default => 0,
     recommends('Net::Twitter::Lite' => '1.03');
 
-build_requires  'Test::More'        => '0.42';
+build_requires  'Test::More'        => '0.90';
 
 tests 't/*.t';
 author_tests 'xt';
