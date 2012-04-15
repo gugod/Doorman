@@ -95,6 +95,7 @@ sub prepare_call {
     if (!$self->root_url) {
         my $root_uri = $request->uri->clone;
         $root_uri->path("");
+        $root_uri->query(undef);
         $self->root_url($root_uri->as_string);
     }
 
