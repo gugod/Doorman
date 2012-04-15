@@ -93,7 +93,7 @@ sub prepare_call {
     weaken($self->{env});
 
     if (!$self->root_url) {
-        my $root_uri = $request->uri;
+        my $root_uri = $request->uri->clone;
         $root_uri->path("");
         $self->root_url($root_uri->as_string);
     }
