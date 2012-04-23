@@ -1,3 +1,6 @@
+0.07:
+- fixed a subtle bug resulting inconsistent sign in/out behaviour with many help from lukec++
+
 0.06:
 - documentation and refactoring
 
