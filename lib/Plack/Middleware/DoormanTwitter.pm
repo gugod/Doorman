@@ -18,7 +18,8 @@ sub twitter {
 
     my $nt = Net::Twitter::Lite->new(
         consumer_key    => $self->consumer_key,
-        consumer_secret => $self->consumer_secret
+        consumer_secret => $self->consumer_secret,
+        legacy_lists_api => 0,
     );
 
     my $access = $self->twitter_access;
