@@ -6,7 +6,7 @@ all_from 'lib/Doorman.pm';
 
 requires
     'Plack' => '0.9963',
-    'Plack::Middleware::Session' => '0.13';
+    'Plack::Middleware::Session' => '0.14';
 
 feature "OpenID Middleware" =>
     -default => 0,
