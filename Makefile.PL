@@ -5,8 +5,8 @@ use inc::Module::Install;
 all_from 'lib/Doorman.pm';
 
 requires
-    'Plack' => '0.9963',
-    'Plack::Middleware::Session' => '0.14';
+    'Plack' => '1.0018',
+    'Plack::Middleware::Session' => '0.18';
 
 feature "OpenID Middleware" =>
     -default => 0,
