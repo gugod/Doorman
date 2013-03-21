@@ -10,13 +10,13 @@ requires
 
 feature "OpenID Middleware" =>
     -default => 0,
-    recommends('IO::Socket::SSL' => '1.39',
-               'Net::OpenID::Consumer' => '1.03',
+    recommends('IO::Socket::SSL' => '1.84',
+               'Net::OpenID::Consumer' => '1.13',
                'LWP::UserAgent' => '6.04');
 
 feature "Twitter Middleware" =>
     -default => 0,
-    recommends('Net::Twitter::Lite' => '1.03');
+    recommends('Net::Twitter::Lite' => '0.12002');
 
 build_requires  'Test::More'        => '0.98';
 
