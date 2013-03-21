@@ -12,7 +12,7 @@ use Plack::Request;
 use Plack::Util::Accessor qw(secret ua);
 
 use Net::OpenID::Consumer;
-use LWPx::ParanoidAgent;
+use LWP::UserAgent;
 use URI;
 use Scalar::Util qw(weaken);
 
@@ -25,7 +25,7 @@ sub prepare_app {
         'This is the default consumer_secret value for Net::OpenID::Consumer
          that you should provide for your own app. ' . $VERSION
     ) unless $self->secret;
-    $self->ua('LWPx::ParanoidAgent') unless $self->ua;
+    $self->ua('LWP::UserAgent') unless $self->ua;
 }
 
 sub openid_verified_url {

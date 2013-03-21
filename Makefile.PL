@@ -12,7 +12,7 @@ feature "OpenID Middleware" =>
     -default => 0,
     recommends('IO::Socket::SSL' => '1.39',
                'Net::OpenID::Consumer' => '1.03',
-               'LWPx::ParanoidAgent' => '1.07');
+               'LWP::UserAgent' => '6.04');
 
 feature "Twitter Middleware" =>
     -default => 0,
