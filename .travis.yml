@@ -8,7 +8,6 @@ perl:
 before_install:
    - cpanm --notest --quiet Module::Install::CPANfile
    - cpanm --notest --quiet Module::Install::AuthorTests
-   - cpanm --notest --quiet Net::OpenID::Consumer
 
 notifications:
    irc:
