@@ -6,7 +6,8 @@ perl:
    - "5.10"
    
 before_install:
-   - cpanm Module::Install::CPANfile
+   - cpanm --notest --quiet Module::Install::CPANfile
+   - cpanm --notest --quiet Module::Install::AuthorTests
 
 notifications:
    irc:
