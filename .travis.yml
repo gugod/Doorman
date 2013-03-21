@@ -6,9 +6,10 @@ perl:
    - "5.10"
    
 before_install:
-   - cpanm Module::Install
+   - cpanm Module::Install::CPANfile
 
 notifications:
    irc:
       channels:
          - irc.freenode.org#chupei.pm
+         
