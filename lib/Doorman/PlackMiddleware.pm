@@ -1,6 +1,7 @@
 package Doorman::PlackMiddleware;
 use 5.010;
 use parent 'Plack::Middleware';
+use Plack::Session;
 use Plack::Util::Accessor qw(root_url scope);
 
 use Doorman;
