@@ -6,6 +6,8 @@ perl:
    - "5.10"
    
 before_install:
+   - sudo apt-get update -qq
+   - sudo apt-get intsall -qq libgmp-dev
    - cpanm --notest --quiet Module::Install::CPANfile
    - cpanm --notest --quiet Module::Install::AuthorTests
 
