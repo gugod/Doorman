@@ -8,6 +8,7 @@ perl:
 before_install:
    - sudo apt-get update -qq
    - sudo apt-get install -qq libgmp-dev
+  -  'yes | cpanm --verbose --notest Module::Install local::lib'
    - cpanm --notest --quiet Module::Install::CPANfile
    - cpanm --notest --quiet Module::Install::AuthorTests
 
