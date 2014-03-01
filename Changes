@@ -1,3 +1,6 @@
+0.09:
+- Remove use of given/when to make this friendly with 5.18
+
 0.08:
 - Avoid deprecated warning in Net::Twitter::Lite by lukec
 
