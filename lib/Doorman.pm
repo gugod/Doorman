@@ -40,9 +40,10 @@ This distribution comes with several example plack apps under its
 C<examples> directory for your references. You may also browse them
 online: L<https://github.com/gugod/Doorman/tree/master/examples>
 
-=head1 AUTHOR
+=head1 AUTHORS
 
     Kang-min Liu <gugod@gugod.org>
+    Luke Closs   <me@luk.ec>
 
 =head1 COPYRIGHT AND LICENSE
 
