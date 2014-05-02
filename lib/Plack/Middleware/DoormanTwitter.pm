@@ -97,6 +97,8 @@ sub call {
             return [302, [Location => $url->as_string], ['']];
         }
         elsif ($request->path eq $self->twitter_verified_path) {
+            return $self->app->($env) if $request->param('denied');
+
             my $verifier = $request->param('oauth_verifier');
             my $oauth = $session->{"doorman.@{[ $self->scope ]}.twitter.oauth"};
             my $nt = $self->twitter;
