@@ -1,6 +1,6 @@
 package Doorman;
 use 5.010;
-our $VERSION = "0.09";
+our $VERSION = "0.10";
 our $AUTHORITY = 'http://gugod.org';
 
 1;
@@ -31,6 +31,10 @@ L<Plack::Middleware::DoormanOpenID>
 =item *
 
 L<Plack::Middleware::DoormanTwitter>
+
+=item *
+
+L<Plack::Middleware::DoormanAuth0>
 
 =back
 

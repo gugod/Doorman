@@ -1,3 +1,6 @@
+0.10:
+- Add Auth0 Doorman
+
 0.09:
 - Remove use of given/when to make this friendly with 5.18
 - Pass through to app when access is denied by the user
