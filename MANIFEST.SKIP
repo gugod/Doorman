@@ -22,3 +22,4 @@
 ^\.gitignore$
 ^\.DS_Store
 ^examples/twitter.yml$
+^.travis.yml$

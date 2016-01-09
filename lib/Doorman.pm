@@ -51,7 +51,7 @@ online: L<https://github.com/gugod/Doorman/tree/master/examples>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2011, 2012, 2013, 2014 Kang-min Liu C<< <gugod@gugod.org> >>.
+Copyright (c) 2011..* Kang-min Liu C<< <gugod@gugod.org> >>.
 
 This is free software, licensed under:
 
