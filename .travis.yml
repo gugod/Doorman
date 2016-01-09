@@ -1,3 +1,5 @@
+sudo: required
+
 language: perl
 perl:
    - "5.19"
@@ -18,4 +20,3 @@ notifications:
    irc:
       channels:
          - irc.freenode.org#chupei.pm
-         
