@@ -6,7 +6,7 @@ use strict;
 our $VERSION   = "0.06";
 our $AUTHORITY = "http://gugod.org";
 
-use feature qw(say switch);
+use feature qw(say);
 use Plack::Request;
 use Plack::Util::Accessor qw(consumer_key consumer_secret);
 use URI;
@@ -18,7 +18,8 @@ sub twitter {
 
     my $nt = Net::Twitter::Lite->new(
         consumer_key    => $self->consumer_key,
-        consumer_secret => $self->consumer_secret
+        consumer_secret => $self->consumer_secret,
+        legacy_lists_api => 0,
     );
 
     my $access = $self->twitter_access;
@@ -83,8 +84,8 @@ sub call {
     my $request = Plack::Request->new($env);
     my $session = $env->{'psgix.session'} or die "Session is required for Twitter OAuth.";
 
-    given([$request->method, $request->path]) {
-        when(['GET', $self->sign_in_path]) {
+    if ($request->method eq 'GET') {
+        if ($request->path eq $self->sign_in_path) {
             my $nt = $self->twitter;
             my $url = $nt->get_authentication_url(callback => $self->twitter_verified_url);
 
@@ -95,8 +96,9 @@ sub call {
 
             return [302, [Location => $url->as_string], ['']];
         }
+        elsif ($request->path eq $self->twitter_verified_path) {
+            return $self->app->($env) if $request->param('denied');
 
-        when(['GET', $self->twitter_verified_path]) {
             my $verifier = $request->param('oauth_verifier');
             my $oauth = $session->{"doorman.@{[ $self->scope ]}.twitter.oauth"};
             my $nt = $self->twitter;
@@ -115,8 +117,7 @@ sub call {
 
             delete $session->{"doorman.@{[ $self->scope ]}.twitter.oauth"};
         }
-
-        when(['GET', $self->sign_out_path]) {
+        elsif ($request->path eq $self->sign_out_path) {
             if ($session) {
                 delete $session->{"doorman.@{[$self->scope]}.twitter"};
             }

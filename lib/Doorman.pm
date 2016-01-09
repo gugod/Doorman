@@ -1,6 +1,6 @@
 package Doorman;
 use 5.010;
-our $VERSION = "0.07";
+our $VERSION = "0.10";
 our $AUTHORITY = 'http://gugod.org';
 
 1;
@@ -32,6 +32,10 @@ L<Plack::Middleware::DoormanOpenID>
 
 L<Plack::Middleware::DoormanTwitter>
 
+=item *
+
+L<Plack::Middleware::DoormanAuth0>
+
 =back
 
 =head1 EXAMPLES
@@ -40,13 +44,14 @@ This distribution comes with several example plack apps under its
 C<examples> directory for your references. You may also browse them
 online: L<https://github.com/gugod/Doorman/tree/master/examples>
 
-=head1 AUTHOR
+=head1 AUTHORS
 
     Kang-min Liu <gugod@gugod.org>
+    Luke Closs   <me@luk.ec>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2011, Kang-min Liu C<< <gugod@gugod.org> >>.
+Copyright (c) 2011..* Kang-min Liu C<< <gugod@gugod.org> >>.
 
 This is free software, licensed under:
 

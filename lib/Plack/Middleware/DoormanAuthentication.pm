@@ -5,7 +5,6 @@ use strict;
 our $VERSION   = "0.06";
 our $AUTHORITY = "http://gugod.org";
 
-use feature qw(switch);
 use parent 'Doorman::PlackMiddleware';
 
 use Plack::Util::Accessor qw(authenticator);
@@ -24,20 +23,17 @@ sub call {
 
     my $request = Plack::Request->new($env);
 
-    given([$request->method, $request->path]) {
-        when(['POST', $self->sign_in_path]) {
-            my ($success, $error_message) = $self->authenticator->($self, $self->{env});
-            if ($success) {
-                $self->session_set("authenticated" => $success);
-            }
-            else {
-                $self->env_set("error" => $error_message);
-            }
+    if ($request->method eq 'POST' and $request->path eq $self->sign_in_path) {
+        my ($success, $error_message) = $self->authenticator->($self, $self->{env});
+        if ($success) {
+            $self->session_set("authenticated" => $success);
         }
-
-        when(['GET', $self->sign_out_path]) {
-            $self->session_remove("authenticated");
+        else {
+            $self->env_set("error" => $error_message);
         }
+    }
+    elsif ($request->method eq 'GET' and $request->path eq $self->sign_out_path) {
+        $self->session_remove("authenticated");
     }
 
     return $self->app->($env);
