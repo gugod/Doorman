@@ -1,0 +1,91 @@
+{
+   "abstract" : "The authentication middeleware collection for Plack.",
+   "author" : [
+      "Kang-min Liu <gugod@gugod.org>",
+      "Luke Closs   <me@luk.ec>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "App::ModuleBuildTiny version 0.027",
+   "license" : [
+      "mit"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : 2
+   },
+   "name" : "Doorman",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build::Tiny" : "0.034"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "App::ModuleBuildTiny" : "0.027"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "IO::Socket::SSL" : "1.84",
+            "LWP::UserAgent" : "6.04",
+            "Net::OpenID::Consumer" : "1.13",
+            "Net::Twitter::Lite" : "0.12002",
+            "Plack" : "1.0018",
+            "Plack::Middleware::Session" : "0.18"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.98"
+         }
+      }
+   },
+   "provides" : {
+      "Doorman" : {
+         "file" : "lib/Doorman.pm",
+         "version" : "0.10"
+      },
+      "Doorman::PlackMiddleware" : {
+         "file" : "lib/Doorman/PlackMiddleware.pm",
+         "version" : "0"
+      },
+      "Doorman::Scope" : {
+         "file" : "lib/Doorman/Scope.pm"
+      },
+      "Plack::Middleware::DoormanAuth0" : {
+         "file" : "lib/Plack/Middleware/DoormanAuth0.pm",
+         "version" : "0.01"
+      },
+      "Plack::Middleware::DoormanAuthentication" : {
+         "file" : "lib/Plack/Middleware/DoormanAuthentication.pm",
+         "version" : "0.06"
+      },
+      "Plack::Middleware::DoormanGoogleFederatedLogin" : {
+         "file" : "lib/Plack/Middleware/DoormanGoogleFederatedLogin.pm"
+      },
+      "Plack::Middleware::DoormanOpenID" : {
+         "file" : "lib/Plack/Middleware/DoormanOpenID.pm",
+         "version" : "0.06"
+      },
+      "Plack::Middleware::DoormanTwitter" : {
+         "file" : "lib/Plack/Middleware/DoormanTwitter.pm",
+         "version" : "0.06"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/gugod/Doorman/issues"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/gugod/Doorman.git",
+         "web" : "https://github.com/gugod/Doorman"
+      }
+   },
+   "version" : "0.10",
+   "x_serialization_backend" : "JSON::PP version 2.97001",
+   "x_spdx_expression" : "MIT",
+   "x_static_install" : "1"
+}

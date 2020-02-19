@@ -1,0 +1,14 @@
+{
+    "name": "Doorman",
+    "x_static_install": true,
+    "resources": {
+        "bugtracker": {
+            "web": "https://github.com/gugod/Doorman/issues"
+        },
+        "repository": {
+            "web": "https://github.com/gugod/Doorman",
+            "url": "https://github.com/gugod/Doorman.git",
+            "type": "git"
+        }
+    }
+}
