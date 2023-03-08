@@ -193,6 +193,8 @@ The application root url that consumes openid. Usually this is guessed, and good
 If your application lives under some path, like, http://foo.com/app, you need to pass that
 as the value of this.
 
+=back
+
 =head1 METHODS
 
 =over 4
