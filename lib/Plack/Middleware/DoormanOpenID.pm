@@ -3,7 +3,7 @@ use 5.010;
 use strict;
 
 our $VERSION   = "0.06";
-our $AUTHORITY = "http://gugod.org";
+our $AUTHORITY = "https://gugod.org";
 
 use feature qw(switch);
 use parent 'Doorman::PlackMiddleware';

@@ -1,7 +1,7 @@
 package Doorman;
 use 5.010;
 our $VERSION = "0.10";
-our $AUTHORITY = 'http://gugod.org';
+our $AUTHORITY = 'https://gugod.org';
 
 1;
 

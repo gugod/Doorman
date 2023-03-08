@@ -4,7 +4,7 @@ use parent 'Doorman::PlackMiddleware';
 use strict;
 
 our $VERSION   = "0.06";
-our $AUTHORITY = "http://gugod.org";
+our $AUTHORITY = "https://gugod.org";
 
 use feature qw(say);
 use Plack::Request;
