@@ -5,7 +5,7 @@
       "Luke Closs   <me@luk.ec>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "App::ModuleBuildTiny version 0.027",
+   "generated_by" : "App::ModuleBuildTiny version 0.029",
    "license" : [
       "mit"
    ],
@@ -22,7 +22,7 @@
       },
       "develop" : {
          "requires" : {
-            "App::ModuleBuildTiny" : "0.027"
+            "App::ModuleBuildTiny" : "0.029"
          }
       },
       "runtime" : {
@@ -85,7 +85,7 @@
       }
    },
    "version" : "0.10",
-   "x_serialization_backend" : "JSON::PP version 2.97001",
+   "x_serialization_backend" : "JSON::PP version 4.07",
    "x_spdx_expression" : "MIT",
    "x_static_install" : "1"
 }
