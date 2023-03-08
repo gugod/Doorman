@@ -1,0 +1,14 @@
+name: Test
+
+on:
+  push:
+
+jobs:
+  prove:
+    container:
+      image: perl:5.36
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: cpanm -q --notest --no-man-pages --installdeps .
+      - run: prove -lrv t/
