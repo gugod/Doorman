@@ -1,8 +1,5 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
-use 5.010;
-use Test::More;
+use Test2::V0;
 
 use Plack::Builder;
 use Plack::Test;
