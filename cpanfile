@@ -6,6 +6,6 @@ requires "LWP::UserAgent"           => "6.04";
 requires "Net::Twitter::Lite"       => "0.12002";
 
 on "test" => sub {
-    requires "Test::More" => "0.98";
-    requires "Test2::V0";
+   requires "Test2::Harness";
+   requires "Test2::V0";
 };
