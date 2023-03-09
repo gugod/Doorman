@@ -1,13 +1,9 @@
 #!/usr/bin/env perl
-use strict;
-use warnings;
-use 5.010;
-
 package Plack::Middleware::DoormanNull;
 use parent "Doorman::PlackMiddleware";
 
 package main;
-use Test::More;
+use Test2::V0;
 
 subtest "fq method" => sub {
     my $mw = Plack::Middleware::DoormanNull->new;
